@@ -7,7 +7,9 @@ $nav = '
 $header = '
 Recherche
 ' ;
-$section = "
+$titre_recherche = "<h2>Rechercher par titre</h2>";
+$section = $titre_recherche.
+"
 <form method='POST' action=''>
 <input type='text' name='recherche'>
 <input type='submit'> 
@@ -22,28 +24,31 @@ catch (Exception $e)
     };
 
     if (!isset($_POST["recherche"])){
-        $section = "
+        $section = $titre_recherche . "
         <form method='POST' action=''>
         <input type='text' name='recherche'>
-        <input type='submit'> 
-        <p>indefini<p>";
+        <input type='submit'>";
     }
     elseif (empty($_POST["recherche"])) {
-        $section = "
-        <form method='POST' action=''>
-        <input type='text' name='recherche'>
-        <input type='submit'> 
-        <p>Champ vide<p>";
+        header('Location: index.php?p=annonces');
     }
     else {
-        $annonce = $bdd->query('
-        select ann_oid, uti_prenom, ann_titre, ann_description, ann_prix , rub_label
-        from ann_annonce
+        // $annonce = $bdd->query('
+        // select ann_oid, uti_prenom, ann_titre, ann_description, ann_prix , rub_label
+        // from ann_annonce
+        // INNER JOIN uti_utilisateur ON ann_annonce.uti_oid = uti_utilisateur.uti_oid
+        // INNER JOIN rub_rubrique ON ann_annonce.rub_oid = rub_rubrique.rub_oid
+        // WHERE ann_titre like "%'.$_POST["recherche"].'%"
+        // ORDER BY ann_oid;
+        //     ');
+        $sql = sprintf("
+        SELECT ann_oid, uti_prenom, ann_titre, ann_description, ann_prix , rub_label
+        FROM ann_annonce
         INNER JOIN uti_utilisateur ON ann_annonce.uti_oid = uti_utilisateur.uti_oid
         INNER JOIN rub_rubrique ON ann_annonce.rub_oid = rub_rubrique.rub_oid
-        WHERE ann_titre like "%'.$_POST["recherche"].'%"
-        ORDER BY ann_oid;
-            ');
+        WHERE ann_titre like '%%%s%%'
+        ORDER BY ann_oid",$_POST['recherche']);
+        $annonce = $bdd->query($sql);
             $section ="
             <span>
                 <table class='table' >

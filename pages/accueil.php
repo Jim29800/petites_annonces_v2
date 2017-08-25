@@ -7,7 +7,8 @@ $nav = '
 <li><a href="?p=annonces">Annonces</a></li>
 ' ;
 $section = 
-'<div class="text-center">
+'<div class ="text-center"><h1>Hey you know what it is ?</h1></div>
+<div class="text-center">
 <img src="https://www.commercemonde.com/wp-content/uploads/2016/10/phoque-1-673x280.jpg" alt="phoque">
 </div>';
 ?>

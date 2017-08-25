@@ -10,9 +10,14 @@
 </head>
 <body>
     <header class="container">
-    <div class="col-sm-9">
+    <div class="col-sm-6">
     <h1><?= $header ?></h1>
         </div>
+    <div class="col-sm-3">
+    <a class="btn btn-primary btn-lg" href="index.php?p=recherche">
+    Rechercher une annonce
+    </a>
+    </div>
     <div class="col-sm-3">
     <?php include('/media/www-dev/private/annonces-pf/pages/header.php'); ?>
     </div>

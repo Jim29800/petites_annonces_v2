@@ -12,21 +12,31 @@ select * from  uti_utilisateur;
 ');
 $cat = $bdd->query('
 select * from  rub_rubrique
-WHERE rub_oid_parent is not null;
+ORDER BY rub_ordre;
 ');
 
 $monform = '
                 <form  action="pages/ajout.php" method="post">
                     <h2>Déposer une nouvelle annonce</h2>
                     <div class="form-group">
-                    <label for="utilisateur">Select list:</label>
-                    <select class="form-control" id="utilisateur"   name="rubrique">';
+                    <label for="rubrique">Rubrique:</label>
+                    <select class="form-control" id="rubrique"   name="rubrique">';
                         
                         while ($donnees_cat = $cat->fetch()) {
+                            $verif = false;
+                            if  ($donnees_cat['rub_oid_parent'] == NULL){
+                                if ($verif){
+                                    $monform .="</optgroup>";
+                                    $verif = false;
+                                }
+                                $monform .= "<optgroup label ='".  $donnees_cat['rub_label'] . "'>";
+                                $verif = true;
+                            }else{
                             $monform .= "<option value='" .  $donnees_cat['rub_oid'].  "'>".  $donnees_cat['rub_label'] ."</option>";
-                                                };
+                            }
+                        };
                         
-                        $monform .= '</select>
+                        $monform .= '</optgroup></select>
                     </div> 
                     <div class="form-group">
                         <label for="titre">Votre titre</label>
@@ -41,7 +51,7 @@ $monform = '
                         <input class="form-control" type="text" name="description" id="description" />
                     </div>
                     <div class="form-group">
-                        <label for="utilisateur">Select list:</label>
+                        <label for="utilisateur">Vendeur:</label>
                         <select class="form-control" id="utilisateur"   name="utilisateur">';
                             
                             while ($donnees = $annonce->fetch()) {
@@ -57,9 +67,10 @@ $monform = '
                 ?>
 
 <!-- Button trigger modal -->
+
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   Ajouter un annonce
-</button>
+</button
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
